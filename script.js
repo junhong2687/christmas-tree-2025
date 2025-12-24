@@ -1,4 +1,3 @@
-// Update check: v2
 gsap.registerPlugin(MotionPathPlugin);
 
 var xmlns = "http://www.w3.org/2000/svg",
@@ -245,39 +244,10 @@ function createSnow() {
   }
 }
 
-// === 新增：聖誕老人飛行動畫 ===
-function animateSanta() {
-  const santa = select("#santaGroup");
-  if (!santa) return;
-  
-  // 設定初始狀態
-  gsap.set(santa, { opacity: 1, x: -250, y: 50, rotation: -5 });
-
-  const santaTl = gsap.timeline({ repeat: -1, repeatDelay: 5 }); // 每隔 5 秒重複一次
-
-  santaTl.to(santa, {
-    x: 900, // 飛到畫面外右側
-    duration: 12,
-    ease: "power1.inOut",
-  }, 0)
-  .to(santa, {
-    y: 80, // 輕微上下浮動 (波浪效果)
-    duration: 2,
-    repeat: 5,
-    yoyo: true,
-    ease: "sine.inOut"
-  }, 0)
-  .to(santa, {
-    rotation: 0,
-    duration: 12,
-    ease: "none"
-  }, 0);
-}
-
 createParticles();
 drawStar();
 createSnow(); // 啟動下雪
-animateSanta(); // 啟動聖誕老人
+// animateSanta(); // 移除聖誕老人
 
 // 準備其他路徑的 DrawSVG 替代
 var treePathMaskPath = select(".treePathMaskPath");
