@@ -258,38 +258,9 @@ function createSnow() {
   }
 }
 
-// 聖誕老人飛行動畫 (已包含圖片版本)
-function animateSanta() {
-  const santa = select("#santaGroup");
-  if (!santa) return;
-  
-  gsap.set(santa, { opacity: 1, x: -250, y: 50, rotation: -5 });
-
-  const santaTl = gsap.timeline({ repeat: -1, repeatDelay: 5 });
-
-  santaTl.to(santa, {
-    x: 900,
-    duration: 12,
-    ease: "power1.inOut",
-  }, 0)
-  .to(santa, {
-    y: 80,
-    duration: 2,
-    repeat: 5,
-    yoyo: true,
-    ease: "sine.inOut"
-  }, 0)
-  .to(santa, {
-    rotation: 0,
-    duration: 12,
-    ease: "none"
-  }, 0);
-}
-
 createParticles();
 drawStar();
 createSnow(); 
-animateSanta(); // 這裡啟動聖誕老人
 
 var treePathMaskPath = select(".treePathMaskPath");
 var treePotMaskPath = select(".treePotMaskPath");

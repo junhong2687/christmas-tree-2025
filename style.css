@@ -30,9 +30,11 @@ body {
   visibility: hidden;
   position: relative;
   z-index: 10;
+  /* 讓 SVG 內的濾鏡效果更好 */
   overflow: visible;
 }
 
+/* 粒子混合模式：讓重疊的光點更亮 */
 .particle {
   mix-blend-mode: screen;
 }
@@ -47,6 +49,7 @@ body {
   pointer-events: none;
 }
 
+/* 高級磨砂玻璃遮罩 */
 #startOverlay {
   position: fixed;
   top: 0;
@@ -72,10 +75,10 @@ body {
   text-transform: uppercase;
   letter-spacing: 5px;
   margin: 0;
+  /* 黃金光澤文字 */
   background: linear-gradient(to bottom, #fff4e6 0%, #ffbf00 100%);
-  /* 這裡修復了警告：同時加上標準屬性 */
   -webkit-background-clip: text;
-  background-clip: text; 
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
   animation: shine 3s infinite alternate;
