@@ -14,7 +14,6 @@ var xmlns = "http://www.w3.org/2000/svg",
   sparkle = select(".sparkle"),
   tree = select("#tree"),
   showParticle = true,
-  // 華麗的聖誕配色
   particleColorArray = [
     "#FFD700", // 金
     "#E60000", // 紅
@@ -26,7 +25,7 @@ var xmlns = "http://www.w3.org/2000/svg",
   particleTypeArray = ["#star", "#circ", "#cross", "#heart"],
   particlePool = [],
   particleCount = 0,
-  numParticles = 250; // 增加粒子數量
+  numParticles = 250;
 
 // --- 音樂與開始畫面控制 ---
 var startOverlay = document.getElementById("startOverlay");
@@ -41,7 +40,7 @@ startOverlay.addEventListener("click", function() {
   });
  });
 
-// --- 互動視差效果 (Interactive Parallax) ---
+// --- 互動視差效果 ---
 document.addEventListener("mousemove", (e) => {
     let x = (e.clientX / window.innerWidth - 0.5) * 2;
     let y = (e.clientY / window.innerHeight - 0.5) * 2;
