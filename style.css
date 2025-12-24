@@ -7,7 +7,6 @@ body {
   height: 100vh;
   overflow: hidden;
   background-color: #020205;
-  /* 極光背景動畫 */
   background-image: 
     radial-gradient(circle at 50% 100%, #1b2735 0%, #090a0f 100%),
     linear-gradient(45deg, rgba(0, 255, 127, 0) 0%, rgba(0, 255, 127, 0.05) 50%, rgba(0, 255, 127, 0) 100%);
@@ -27,14 +26,14 @@ body {
 .mainSVG {
   width: 90%;
   height: 90%;
-  visibility: hidden; /* 初始隱藏，交給 JS 顯示 */
+  visibility: hidden;
   position: relative;
   z-index: 10;
   overflow: visible;
 }
 
 .particle {
-  mix-blend-mode: screen; /* 讓光點疊加時更亮 */
+  mix-blend-mode: screen;
 }
 
 #snowSVG {
@@ -47,7 +46,6 @@ body {
   pointer-events: none;
 }
 
-/* 磨砂玻璃遮罩 */
 #startOverlay {
   position: fixed;
   top: 0;
