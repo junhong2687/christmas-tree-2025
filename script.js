@@ -14,16 +14,16 @@ var xmlns = "http://www.w3.org/2000/svg",
   sparkle = select(".sparkle"),
   tree = select("#tree"),
   showParticle = true,
+  // === 修改：這裡換成了更漂亮的聖誕配色 (金、紅、綠、白) ===
   particleColorArray = [
-    "#E8F6F8",
-    "#ACE8F8",
-    "#F6FBFE",
-    "#A2CBDC",
-    "#B74551",
-    "#5DBA72",
-    "#910B28",
-    "#910B28",
-    "#446D39"
+    "#FFD700", // 金色
+    "#FF0000", // 亮紅
+    "#FFFFFF", // 雪白
+    "#32CD32", // 萊姆綠
+    "#FF69B4", // 亮粉紅 (增加一點活潑感)
+    "#00FFFF", // 亮青色 (像霓虹燈)
+    "#FF4500", // 橘紅
+    "#ADFF2F"  // 黃綠
   ],
   particleTypeArray = ["#star", "#circ", "#cross", "#heart"],
   particlePool = [],
@@ -54,7 +54,6 @@ gsap.set(sparkle, {
   y: -100
 });
 
-// 替代 DrawSVG 的輔助函數
 function prepareDraw(el) {
     var length = el.getTotalLength();
     el.style.strokeDasharray = length;
@@ -118,7 +117,6 @@ function createParticles() {
 
 var getScale = gsap.utils.random(0.5, 3, 0.001, true);
 
-// 替代 Physics2D 的粒子動畫
 function playParticle(p) {
   if (!showParticle) {
     return;
@@ -210,46 +208,40 @@ function drawStar() {
     );
 }
 
-// === 新增：下雪動畫 ===
 function createSnow() {
   const snowSVG = select("#snowSVG");
-  // 檢查 snowSVG 是否存在，避免舊版 HTML 導致錯誤
   if (!snowSVG) return;
 
-  const numSnowflakes = 100; // 雪花數量
+  const numSnowflakes = 100;
 
   for (let i = 0; i < numSnowflakes; i++) {
     let snowflake = document.createElementNS(xmlns, "circle");
-    snowflake.setAttribute("r", gsap.utils.random(1, 3)); // 隨機大小
+    snowflake.setAttribute("r", gsap.utils.random(1, 3));
     snowflake.setAttribute("fill", "#FFFFFF");
     snowflake.setAttribute("opacity", gsap.utils.random(0.5, 0.9));
     snowSVG.appendChild(snowflake);
 
-    // 設定初始位置在畫面外上方
     gsap.set(snowflake, {
       x: gsap.utils.random(0, 800),
       y: gsap.utils.random(-100, -10),
     });
 
-    // 飄落動畫
     gsap.to(snowflake, {
-      y: 650, // 飄到畫面外下方
-      x: "+=" + gsap.utils.random(-50, 50), // 輕微左右飄動
+      y: 650,
+      x: "+=" + gsap.utils.random(-50, 50),
       rotation: gsap.utils.random(0, 360),
-      duration: gsap.utils.random(5, 15), // 隨機飄落時間
-      delay: gsap.utils.random(0, 10), // 隨機延遲開始
-      repeat: -1, // 無限循環
-      ease: "none" // 線性速度
+      duration: gsap.utils.random(5, 15),
+      delay: gsap.utils.random(0, 10),
+      repeat: -1,
+      ease: "none"
     });
   }
 }
 
 createParticles();
 drawStar();
-createSnow(); // 啟動下雪
-// animateSanta(); // 移除聖誕老人
+createSnow(); 
 
-// 準備其他路徑的 DrawSVG 替代
 var treePathMaskPath = select(".treePathMaskPath");
 var treePotMaskPath = select(".treePotMaskPath");
 prepareDraw(treePathMaskPath);
