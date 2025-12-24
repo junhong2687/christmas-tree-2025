@@ -1,3 +1,4 @@
+// Update check: v2
 gsap.registerPlugin(MotionPathPlugin);
 
 var xmlns = "http://www.w3.org/2000/svg",
@@ -33,19 +34,16 @@ var xmlns = "http://www.w3.org/2000/svg",
 // --- 音樂與開始畫面控制 ---
 var startOverlay = document.getElementById("startOverlay");
 var bgMusic = document.getElementById("bgMusic");
+bgMusic.volume = 0.5; // 設定音量
 
 startOverlay.addEventListener("click", function() {
   startOverlay.classList.add("fade-out");
-  // 播放音樂
-  bgMusic.play().then(() => {
+  bgMusic.play().then(() => { 
     // 音樂開始播放
   }).catch(error => {
     console.log("Audio play failed:", error);
   });
-  
-  // 啟動主動畫 (原本是直接跑，現在為了體驗好一點，可以考慮這裡再開始，或者保持原樣)
-  // 如果想點擊後動畫才開始，可以把最後一行改到這裡。
-});
+ });
 // -----------------------
 
 gsap.set("svg", {
@@ -68,8 +66,7 @@ function prepareDraw(el) {
 let getSVGPoints = (path) => {
   let arr = [];
   var rawPath = MotionPathPlugin.getRawPath(path)[0];
-  // MotionPathPlugin 在沒有 MorphSVG 的情況下對於簡單路徑仍然有效
-  rawPath.forEach((el, value) => {
+  rawPath.forEach((el, value) =>  {
     let obj = {};
     obj.x = rawPath[value * 2];
     obj.y = rawPath[value * 2 + 1];
@@ -136,10 +133,9 @@ function playParticle(p) {
   
   var tl = gsap.timeline();
   
-  // 模擬物理效果：隨機角度飛出
-  var angle = gsap.utils.random(-180, 180) * (Math.PI / 180);
-  var velocity = gsap.utils.random(20, 100); // 隨機距離
-  var gravity = gsap.utils.random(10, 50);   // 模擬重力下墜
+   var angle = gsap.utils.random(-180, 180) * (Math.PI / 180);
+  var velocity = gsap.utils.random(20, 100); 
+  var gravity = gsap.utils.random(10, 50); 
   
   var targetX = Math.cos(angle) * velocity;
   var targetY = Math.sin(angle) * velocity;
@@ -148,10 +144,10 @@ function playParticle(p) {
   tl.to(p, {
     duration: duration,
     x: "+=" + targetX,
-    y: "+=" + (targetY + gravity), // 加上 Y 軸偏移模擬重力
+    y: "+=" + (targetY + gravity),
     rotation: gsap.utils.random(-123, 360),
     scale: 0,
-    ease: "power1.out", // 簡單的緩動
+    ease: "power1.out",
     onStart: flicker,
     onStartParams: [p],
     onRepeat: (p) => {
@@ -169,8 +165,7 @@ function playParticle(p) {
 function drawStar() {
   starTl = gsap.timeline({ onUpdate: playParticle });
   
-  // 設定樹底部 Mask 的初始狀態 (模擬 DrawSVG)
-  var treeBottomMaskPath = select(".treeBottomMaskPath");
+   var treeBottomMaskPath = select(".treeBottomMaskPath");
   var treeBottomLen = prepareDraw(treeBottomMaskPath);
 
   starTl
@@ -209,15 +204,80 @@ function drawStar() {
       ".treeBottomMaskPath",
       {
         duration: 2,
-        strokeDashoffset: 0, // 模擬 drawSVG: "0% 0%" -> "0% 100%"
+        strokeDashoffset: 0,
         ease: "linear"
       },
       "-=2"
     );
 }
 
+// === 新增：下雪動畫 ===
+function createSnow() {
+  const snowSVG = select("#snowSVG");
+  // 檢查 snowSVG 是否存在，避免舊版 HTML 導致錯誤
+  if (!snowSVG) return;
+
+  const numSnowflakes = 100; // 雪花數量
+
+  for (let i = 0; i < numSnowflakes; i++) {
+    let snowflake = document.createElementNS(xmlns, "circle");
+    snowflake.setAttribute("r", gsap.utils.random(1, 3)); // 隨機大小
+    snowflake.setAttribute("fill", "#FFFFFF");
+    snowflake.setAttribute("opacity", gsap.utils.random(0.5, 0.9));
+    snowSVG.appendChild(snowflake);
+
+    // 設定初始位置在畫面外上方
+    gsap.set(snowflake, {
+      x: gsap.utils.random(0, 800),
+      y: gsap.utils.random(-100, -10),
+    });
+
+    // 飄落動畫
+    gsap.to(snowflake, {
+      y: 650, // 飄到畫面外下方
+      x: "+=" + gsap.utils.random(-50, 50), // 輕微左右飄動
+      rotation: gsap.utils.random(0, 360),
+      duration: gsap.utils.random(5, 15), // 隨機飄落時間
+      delay: gsap.utils.random(0, 10), // 隨機延遲開始
+      repeat: -1, // 無限循環
+      ease: "none" // 線性速度
+    });
+  }
+}
+
+// === 新增：聖誕老人飛行動畫 ===
+function animateSanta() {
+  const santa = select("#santaGroup");
+  if (!santa) return;
+  
+  // 設定初始狀態
+  gsap.set(santa, { opacity: 1, x: -250, y: 50, rotation: -5 });
+
+  const santaTl = gsap.timeline({ repeat: -1, repeatDelay: 5 }); // 每隔 5 秒重複一次
+
+  santaTl.to(santa, {
+    x: 900, // 飛到畫面外右側
+    duration: 12,
+    ease: "power1.inOut",
+  }, 0)
+  .to(santa, {
+    y: 80, // 輕微上下浮動 (波浪效果)
+    duration: 2,
+    repeat: 5,
+    yoyo: true,
+    ease: "sine.inOut"
+  }, 0)
+  .to(santa, {
+    rotation: 0,
+    duration: 12,
+    ease: "none"
+  }, 0);
+}
+
 createParticles();
 drawStar();
+createSnow(); // 啟動下雪
+animateSanta(); // 啟動聖誕老人
 
 // 準備其他路徑的 DrawSVG 替代
 var treePathMaskPath = select(".treePathMaskPath");
@@ -228,7 +288,7 @@ prepareDraw(treePotMaskPath);
 mainTl
   .to([treePathMaskPath, treePotMaskPath], {
     duration: 6,
-    strokeDashoffset: 0, // 畫出線條
+    strokeDashoffset: 0, 
     stagger: {
       each: 6
     },

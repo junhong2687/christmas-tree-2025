@@ -5,6 +5,7 @@ body {
   align-items: center;
   justify-content: center; 
   font-family: sans-serif;
+  position: relative; /* 確保 body 是相對定位 */
 }
 
 body,
@@ -15,10 +16,24 @@ html {
   padding: 0;
 }
 
-svg{
-  width:90%;
-  height:90%;
-  visibility:hidden;
+/* 主要的聖誕樹 SVG */
+.mainSVG {
+  width: 90%;
+  height: 90%;
+  visibility: hidden;
+  position: relative; /* 確保在雪花層下面 */
+  z-index: 1;
+}
+
+/* === 新增：雪花 SVG 層樣式 === */
+#snowSVG {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* 蓋在聖誕樹上面 */
+  pointer-events: none; /* 讓滑鼠事件穿透，不會擋住點擊 */
 }
 
 /* 開始畫面的樣式 */
@@ -32,7 +47,7 @@ svg{
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1000; /* 確保在最上面 */
   cursor: pointer;
   transition: opacity 0.5s ease;
 }
