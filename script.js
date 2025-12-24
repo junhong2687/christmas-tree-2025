@@ -43,20 +43,19 @@ startOverlay.addEventListener("click", function() {
 
 // --- 互動視差效果 (Interactive Parallax) ---
 document.addEventListener("mousemove", (e) => {
-    // 計算滑鼠位置相對於視窗中心的百分比
     let x = (e.clientX / window.innerWidth - 0.5) * 2;
     let y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-    // 移動聖誕樹 (幅度小)
+    // 移動聖誕樹
     gsap.to(".mainSVG", {
         x: x * 10,
         y: y * 10,
-        rotationY: x * 5, // 微微旋轉
+        rotationY: x * 5, 
         duration: 1,
         ease: "power1.out"
     });
 
-    // 移動雪花 (幅度大，製造深度)
+    // 移動雪花
     gsap.to("#snowSVG", {
         x: x * -30,
         y: y * -30,

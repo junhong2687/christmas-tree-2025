@@ -27,16 +27,14 @@ body {
 .mainSVG {
   width: 90%;
   height: 90%;
-  visibility: hidden;
+  visibility: hidden; /* 初始隱藏，交給 JS 顯示 */
   position: relative;
   z-index: 10;
-  /* 讓 SVG 內的濾鏡效果更好 */
   overflow: visible;
 }
 
-/* 粒子混合模式：讓重疊的光點更亮 */
 .particle {
-  mix-blend-mode: screen;
+  mix-blend-mode: screen; /* 讓光點疊加時更亮 */
 }
 
 #snowSVG {
@@ -49,7 +47,7 @@ body {
   pointer-events: none;
 }
 
-/* 高級磨砂玻璃遮罩 */
+/* 磨砂玻璃遮罩 */
 #startOverlay {
   position: fixed;
   top: 0;
@@ -75,7 +73,6 @@ body {
   text-transform: uppercase;
   letter-spacing: 5px;
   margin: 0;
-  /* 黃金光澤文字 */
   background: linear-gradient(to bottom, #fff4e6 0%, #ffbf00 100%);
   -webkit-background-clip: text;
   background-clip: text;
