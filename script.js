@@ -14,36 +14,56 @@ var xmlns = "http://www.w3.org/2000/svg",
   sparkle = select(".sparkle"),
   tree = select("#tree"),
   showParticle = true,
-  // === 修改：這裡換成了更漂亮的聖誕配色 (金、紅、綠、白) ===
+  // 華麗的聖誕配色
   particleColorArray = [
-    "#FFD700", // 金色
-    "#FF0000", // 亮紅
-    "#FFFFFF", // 雪白
-    "#32CD32", // 萊姆綠
-    "#FF69B4", // 亮粉紅 (增加一點活潑感)
-    "#00FFFF", // 亮青色 (像霓虹燈)
-    "#FF4500", // 橘紅
-    "#ADFF2F"  // 黃綠
+    "#FFD700", // 金
+    "#E60000", // 紅
+    "#FFFFFF", // 白
+    "#00FF7F", // 螢光綠
+    "#00FFFF", // 青
+    "#FF1493"  // 深粉紅
   ],
   particleTypeArray = ["#star", "#circ", "#cross", "#heart"],
   particlePool = [],
   particleCount = 0,
-  numParticles = 201;
+  numParticles = 250; // 增加粒子數量
 
 // --- 音樂與開始畫面控制 ---
 var startOverlay = document.getElementById("startOverlay");
 var bgMusic = document.getElementById("bgMusic");
-bgMusic.volume = 0.5; // 設定音量
+bgMusic.volume = 0.5;
 
 startOverlay.addEventListener("click", function() {
   startOverlay.classList.add("fade-out");
   bgMusic.play().then(() => { 
-    // 音樂開始播放
   }).catch(error => {
     console.log("Audio play failed:", error);
   });
  });
-// -----------------------
+
+// --- 互動視差效果 (Interactive Parallax) ---
+document.addEventListener("mousemove", (e) => {
+    // 計算滑鼠位置相對於視窗中心的百分比
+    let x = (e.clientX / window.innerWidth - 0.5) * 2;
+    let y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+    // 移動聖誕樹 (幅度小)
+    gsap.to(".mainSVG", {
+        x: x * 10,
+        y: y * 10,
+        rotationY: x * 5, // 微微旋轉
+        duration: 1,
+        ease: "power1.out"
+    });
+
+    // 移動雪花 (幅度大，製造深度)
+    gsap.to("#snowSVG", {
+        x: x * -30,
+        y: y * -30,
+        duration: 1.5,
+        ease: "power1.out"
+    });
+});
 
 gsap.set("svg", {
   visibility: "visible"
@@ -238,9 +258,38 @@ function createSnow() {
   }
 }
 
+// 聖誕老人飛行動畫 (已包含圖片版本)
+function animateSanta() {
+  const santa = select("#santaGroup");
+  if (!santa) return;
+  
+  gsap.set(santa, { opacity: 1, x: -250, y: 50, rotation: -5 });
+
+  const santaTl = gsap.timeline({ repeat: -1, repeatDelay: 5 });
+
+  santaTl.to(santa, {
+    x: 900,
+    duration: 12,
+    ease: "power1.inOut",
+  }, 0)
+  .to(santa, {
+    y: 80,
+    duration: 2,
+    repeat: 5,
+    yoyo: true,
+    ease: "sine.inOut"
+  }, 0)
+  .to(santa, {
+    rotation: 0,
+    duration: 12,
+    ease: "none"
+  }, 0);
+}
+
 createParticles();
 drawStar();
 createSnow(); 
+animateSanta(); // 這裡啟動聖誕老人
 
 var treePathMaskPath = select(".treePathMaskPath");
 var treePotMaskPath = select(".treePotMaskPath");
